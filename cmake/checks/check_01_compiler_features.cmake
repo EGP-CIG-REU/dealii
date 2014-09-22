@@ -1,5 +1,4 @@
 ## ---------------------------------------------------------------------
-## $Id$
 ##
 ## Copyright (C) 2012 - 2013 by the deal.II authors
 ##
@@ -303,7 +302,7 @@ CHECK_CXX_SOURCE_COMPILES(
           int old_fn () { return 0; }
           int (*fn_ptr)() = old_fn;
 
-	  int main () {}
+          int main () {}
   "
   DEAL_II_COMPILER_HAS_ATTRIBUTE_DEPRECATED
   )

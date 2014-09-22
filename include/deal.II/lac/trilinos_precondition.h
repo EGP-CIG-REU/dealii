@@ -1,5 +1,4 @@
 // ---------------------------------------------------------------------
-// $Id$
 //
 // Copyright (C) 2008 - 2014 by the deal.II authors
 //
@@ -23,7 +22,7 @@
 #ifdef DEAL_II_WITH_TRILINOS
 
 #  include <deal.II/base/subscriptor.h>
-#  include <deal.II/base/std_cxx1x/shared_ptr.h>
+#  include <deal.II/base/std_cxx11/shared_ptr.h>
 
 #  include <deal.II/lac/trilinos_vector_base.h>
 #  include <deal.II/lac/parallel_vector.h>
@@ -170,7 +169,7 @@ namespace TrilinosWrappers
      * This is a pointer to the preconditioner object that is used when
      * applying the preconditioner.
      */
-    std_cxx1x::shared_ptr<Epetra_Operator> preconditioner;
+    std_cxx11::shared_ptr<Epetra_Operator> preconditioner;
 
     /**
      * Internal communication pattern in case the matrix needs to be copied
@@ -186,7 +185,7 @@ namespace TrilinosWrappers
      * Internal Trilinos map in case the matrix needs to be copied from
      * deal.II format.
      */
-    std_cxx1x::shared_ptr<Epetra_Map>   vector_distributor;
+    std_cxx11::shared_ptr<Epetra_Map>   vector_distributor;
   };
 
 
@@ -1557,7 +1556,7 @@ namespace TrilinosWrappers
     /**
      * A copy of the deal.II matrix into Trilinos format.
      */
-    std_cxx1x::shared_ptr<SparseMatrix> trilinos_matrix;
+    std_cxx11::shared_ptr<SparseMatrix> trilinos_matrix;
   };
 
 

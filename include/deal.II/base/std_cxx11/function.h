@@ -1,5 +1,4 @@
 // ---------------------------------------------------------------------
-// $Id$
 //
 // Copyright (C) 2009 - 2013 by the deal.II authors
 //
@@ -14,20 +13,32 @@
 //
 // ---------------------------------------------------------------------
 
+#ifndef __deal2__std_cxx11_function_h
+#define __deal2__std_cxx11_function_h
 
-/**
- * A namespace that contains a selection of classes and functions that are part
- * of the C++11 standard and that are also provided by the
- * <a href="http://www.boost.org/">BOOST</a> library. The
- * elements that are available through the current namespace are either
- * imported from namespace <code>std</code> (if a compiler's library provides
- * them) or from namespace boost.
- *
- * For more information on the topic,
- * see also @ref CPP11 "C++11 standard"
- *
- * @ingroup CPP11
- */
-namespace std_cxx1x
+
+#include <deal.II/base/config.h>
+
+#ifdef DEAL_II_WITH_CXX11
+
+#  include <functional>
+DEAL_II_NAMESPACE_OPEN
+namespace std_cxx11
 {
+  using std::function;
 }
+DEAL_II_NAMESPACE_CLOSE
+
+#else
+
+#include <boost/function.hpp>
+DEAL_II_NAMESPACE_OPEN
+namespace std_cxx11
+{
+  using boost::function;
+}
+DEAL_II_NAMESPACE_CLOSE
+
+#endif
+
+#endif

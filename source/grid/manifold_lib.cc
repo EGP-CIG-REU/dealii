@@ -1,5 +1,4 @@
 // ---------------------------------------------------------------------
-// $Id: manifold_lib.cc 30130 2013-07-23 13:01:18Z heltai $
 //
 // Copyright (C) 2013 by the deal.II authors
 //
@@ -28,9 +27,7 @@ template <int dim, int spacedim>
 SphericalManifold<dim,spacedim>::SphericalManifold(const Point<spacedim> center):
   ChartManifold<dim,spacedim,spacedim>(SphericalManifold<dim,spacedim>::get_periodicity()),
   center(center)
-{
-  Assert(spacedim != 1, ExcImpossibleInDim(1));
-}
+{}
 
 
 
@@ -275,8 +272,8 @@ FunctionManifold<dim,spacedim,chartdim>::push_forward(const Point<chartdim> &cha
   pull_back_function->vector_value(result, pb);
   for (unsigned int i=0; i<chartdim; ++i)
     Assert((chart_point.norm() > tolerance &&
-            (abs(pb[i]-chart_point[i]) < tolerance*chart_point.norm())) ||
-           (abs(pb[i]-chart_point[i]) < tolerance),
+            (std::abs(pb[i]-chart_point[i]) < tolerance*chart_point.norm())) ||
+           (std::abs(pb[i]-chart_point[i]) < tolerance),
            ExcMessage("The push forward is not the inverse of the pull back! Bailing out."));
 #endif
 

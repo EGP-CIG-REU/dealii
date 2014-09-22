@@ -1,5 +1,4 @@
 // ---------------------------------------------------------------------
-// $Id$
 //
 // Copyright (C) 2009 - 2013 by the deal.II authors
 //
@@ -23,7 +22,7 @@
 
 #ifdef DEAL_II_WITH_SLEPC
 
-#  include <deal.II/base/std_cxx1x/shared_ptr.h>
+#  include <deal.II/base/std_cxx11/shared_ptr.h>
 #  include <deal.II/lac/exceptions.h>
 
 #  include <petscksp.h>
@@ -117,7 +116,7 @@ namespace SLEPcWrappers
       ST st;
     };
 
-    std_cxx1x::shared_ptr<TransformationData> transformation_data;
+    std_cxx11::shared_ptr<TransformationData> transformation_data;
   };
 
   /**

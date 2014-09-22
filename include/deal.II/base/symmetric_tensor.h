@@ -1,5 +1,4 @@
 // ---------------------------------------------------------------------
-// $Id$
 //
 // Copyright (C) 2005 - 2014 by the deal.II authors
 //
@@ -2250,8 +2249,8 @@ double third_invariant (const SymmetricTensor<2,dim,Number> &t)
 template <int dim, typename Number>
 Number trace (const SymmetricTensor<2,dim,Number> &d)
 {
-  Number t=0;
-  for (unsigned int i=0; i<dim; ++i)
+  Number t = d.data[0];
+  for (unsigned int i=1; i<dim; ++i)
     t += d.data[i];
   return t;
 }

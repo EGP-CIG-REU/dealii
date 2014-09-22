@@ -1,5 +1,4 @@
 // ---------------------------------------------------------------------
-// $Id$
 //
 // Copyright (C) 1999 - 2014 by the deal.II authors
 //
@@ -22,7 +21,7 @@
 #include <deal.II/base/point.h>
 #include <deal.II/base/table.h>
 #include <deal.II/base/geometry_info.h>
-#include <deal.II/base/std_cxx1x/tuple.h>
+#include <deal.II/base/std_cxx11/tuple.h>
 
 #include <vector>
 #include <string>
@@ -1460,7 +1459,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_dx (const std::vector<Patch<dim,spacedim> > &patches,
                  const std::vector<std::string>          &data_names,
-                 const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                 const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                  const DXFlags                           &flags,
                  std::ostream                            &out);
 
@@ -1514,7 +1513,7 @@ namespace DataOutBase
   template <int spacedim>
   void write_eps (const std::vector<Patch<2,spacedim> > &patches,
                   const std::vector<std::string>          &data_names,
-                  const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                  const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                   const EpsFlags                          &flags,
                   std::ostream                            &out);
 
@@ -1527,7 +1526,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_eps (const std::vector<Patch<dim,spacedim> > &patches,
                   const std::vector<std::string>          &data_names,
-                  const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                  const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                   const EpsFlags                          &flags,
                   std::ostream                            &out);
 
@@ -1545,7 +1544,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_gmv (const std::vector<Patch<dim,spacedim> > &patches,
                   const std::vector<std::string>          &data_names,
-                  const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                  const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                   const GmvFlags                          &flags,
                   std::ostream                            &out);
 
@@ -1612,7 +1611,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_gnuplot (const std::vector<Patch<dim,spacedim> > &patches,
                       const std::vector<std::string>          &data_names,
-                      const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                      const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                       const GnuplotFlags                      &flags,
                       std::ostream                            &out);
 
@@ -1666,7 +1665,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_povray (const std::vector<Patch<dim,spacedim> > &patches,
                      const std::vector<std::string>          &data_names,
-                     const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                     const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                      const PovrayFlags                       &flags,
                      std::ostream                            &out);
 
@@ -1680,7 +1679,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_tecplot (const std::vector<Patch<dim,spacedim> > &patches,
                       const std::vector<std::string>          &data_names,
-                      const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                      const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                       const TecplotFlags                      &flags,
                       std::ostream                            &out);
 
@@ -1709,7 +1708,7 @@ namespace DataOutBase
   void write_tecplot_binary (
     const std::vector<Patch<dim,spacedim> > &patches,
     const std::vector<std::string>          &data_names,
-    const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+    const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
     const TecplotFlags                      &flags,
     std::ostream                            &out);
 
@@ -1731,7 +1730,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_ucd (const std::vector<Patch<dim,spacedim> > &patches,
                   const std::vector<std::string>          &data_names,
-                  const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                  const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                   const UcdFlags                          &flags,
                   std::ostream                            &out);
 
@@ -1757,7 +1756,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_vtk (const std::vector<Patch<dim,spacedim> > &patches,
                   const std::vector<std::string>          &data_names,
-                  const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                  const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                   const VtkFlags                          &flags,
                   std::ostream                            &out);
 
@@ -1789,7 +1788,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_vtu (const std::vector<Patch<dim,spacedim> > &patches,
                   const std::vector<std::string>          &data_names,
-                  const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                  const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                   const VtkFlags                          &flags,
                   std::ostream                            &out);
 
@@ -1819,7 +1818,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_vtu_main (const std::vector<Patch<dim,spacedim> > &patches,
                        const std::vector<std::string>          &data_names,
-                       const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                       const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                        const VtkFlags                          &flags,
                        std::ostream                            &out);
 
@@ -1847,7 +1846,7 @@ namespace DataOutBase
   template <int spacedim>
   void write_svg (const std::vector<Patch<2,spacedim> > &patches,
                   const std::vector<std::string>          &data_names,
-                  const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                  const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                   const SvgFlags                          &flags,
                   std::ostream                            &out);
 
@@ -1895,7 +1894,7 @@ namespace DataOutBase
   void write_deal_II_intermediate (
     const std::vector<Patch<dim,spacedim> > &patches,
     const std::vector<std::string>          &data_names,
-    const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+    const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
     const Deal_II_IntermediateFlags         &flags,
     std::ostream                            &out);
 
@@ -1933,7 +1932,7 @@ namespace DataOutBase
   template <int dim, int spacedim>
   void write_filtered_data (const std::vector<Patch<dim,spacedim> > &patches,
                             const std::vector<std::string>          &data_names,
-                            const std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
+                            const std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> > &vector_data_ranges,
                             DataOutFilter &filtered_data);
 
   /**
@@ -2709,7 +2708,7 @@ protected:
    * collection of scalar fields.
    */
   virtual
-  std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> >
+  std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> >
   get_vector_data_ranges () const;
 
   /**
@@ -2947,7 +2946,7 @@ protected:
    * collection of scalar fields.
    */
   virtual
-  std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> >
+  std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> >
   get_vector_data_ranges () const;
 
 private:
@@ -2962,7 +2961,7 @@ private:
    * Information about whether certain components of the output field
    * are to be considered vectors.
    */
-  std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> >
+  std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> >
   vector_data_ranges;
 };
 

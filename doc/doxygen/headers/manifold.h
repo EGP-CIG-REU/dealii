@@ -1,5 +1,4 @@
 // ---------------------------------------------------------------------
-// $Id$
 //
 // Copyright (C) 2003 - 2014 by the deal.II authors
 //
@@ -75,9 +74,10 @@
  * is the ChartManifold class, and this is the class that users will
  * likely overload for complex geometries.
  *
- * While this process is non trivial in most cases of interest, for
- * most of the trivial geometries, like cylinders, spheres or shells,
- * we provide reasonable implementations.
+ * While this process is non trivial in most cases of interest, for most of
+ * the trivial geometries, like cylinders, spheres or shells, deal.II provides
+ * reasonable implementations. More complicated examples can be described
+ * using the techniques shown in step-53.
  *
  * The boundary of a Triangulation is a special case of Manifold, for
  * which additional information can be useful in user codes, such as

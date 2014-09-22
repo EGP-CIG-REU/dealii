@@ -1,5 +1,4 @@
 // ---------------------------------------------------------------------
-// $Id$
 //
 // Copyright (C) 1999 - 2014 by the deal.II authors
 //
@@ -2469,7 +2468,7 @@ void GridOut::write_vtk (const Triangulation<dim,spacedim> &tria,
   // information, etc.
   DataOutBase::write_vtk (triangulation_to_patches(tria),
                           std::vector<std::string>(),
-                          std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> >(),
+                          std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> >(),
                           vtk_flags,
                           out);
 
@@ -2490,7 +2489,7 @@ void GridOut::write_vtu (const Triangulation<dim,spacedim> &tria,
   // information, etc.
   DataOutBase::write_vtu (triangulation_to_patches(tria),
                           std::vector<std::string>(),
-                          std::vector<std_cxx1x::tuple<unsigned int, unsigned int, std::string> >(),
+                          std::vector<std_cxx11::tuple<unsigned int, unsigned int, std::string> >(),
                           vtu_flags,
                           out);
 

@@ -1,5 +1,4 @@
 // ---------------------------------------------------------------------
-// $Id$
 //
 // Copyright (C) 2006 - 2013 by the deal.II authors
 //
@@ -20,7 +19,7 @@
 
 #include <deal.II/base/config.h>
 #include <deal.II/base/subscriptor.h>
-#include <deal.II/base/std_cxx1x/function.h>
+#include <deal.II/base/std_cxx11/function.h>
 
 #include <vector>
 #include <string>
