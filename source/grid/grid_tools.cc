@@ -1047,7 +1047,7 @@ next_cell:
         // the cell and have not searched
         // every cell in the triangulation,
         // we keep on looking.
-        const unsigned int n_cells =get_tria(container).n_cells();
+        const unsigned int n_cells =get_tria(container).n_active_cells();
         bool found = false;
         unsigned int cells_searched = 0;
         while (!found && cells_searched < n_cells)
