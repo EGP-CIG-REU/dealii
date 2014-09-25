@@ -1,4 +1,5 @@
 // ---------------------------------------------------------------------
+// $Id$
 //
 // Copyright (C) 2000 - 2013 by the deal.II authors
 //
@@ -1665,16 +1666,13 @@ transform_real_to_unit_cell (const typename Triangulation<dim,spacedim>::cell_it
                                                   *mdata);
     }
 }
-
-
-
 template<int dim, int spacedim>
 Point<dim>
 MappingQ1<dim,spacedim>::
 transform_real_to_unit_cell_internal
 (const typename Triangulation<dim,spacedim>::cell_iterator &cell,
  const Point<spacedim>                            &p,
- const Point<dim>                                 &initial_p_unit,
+ const Point<dim>                                 &initial_x_unit,
  InternalData                                     &mdata) const
 {
   const unsigned int n_shapes=mdata.shape_values.size();
@@ -1683,74 +1681,26 @@ transform_real_to_unit_cell_internal
 
   std::vector<Point<spacedim> > &points=mdata.mapping_support_points;
   AssertDimension (points.size(), n_shapes);
+  
+ const double eps = 1.e-11;
+ const unsigned int newton_iteration_limit = 20;
+  
+ Point<dim> x_unit_n;
+ Point<spacedim> p_real_n; 
+ 
+ Tensor<1,spacedim> delta_x_unit;
 
+  x_unit_n = initial_x_unit;
 
-  // Newton iteration to solve
-  //    f(x)=p(x)-p=0
-  // where we are looking for 'x' and p(x) is the forward transformation
-  // from unit to real cell. We solve this using a Newton iteration
-  //    x_{n+1}=x_n-[f'(x)]^{-1}f(x)
-  // The start value is set to be the linear approximation to the cell
-
-  // The shape values and derivatives of the mapping at this point are
-  // previously computed.
-
-  Point<dim> p_unit = initial_p_unit;
-
-  compute_shapes(std::vector<Point<dim> > (1, p_unit), mdata);
-  Point<spacedim> p_real = transform_unit_to_real_cell_internal(mdata);
-  Point<spacedim> f = p_real-p;
-
-  // early out if we already have our point
-  if (f.square() < 1e-24 * cell->diameter() * cell->diameter())
-    return p_unit;
-
-  // we need to compare the position of the computed p(x) against the given
-  // point 'p'. We will terminate the iteration and return 'x' if they are
-  // less than eps apart. The question is how to choose eps -- or, put maybe
-  // more generally: in which norm we want these 'p' and 'p(x)' to be eps
-  // apart.
-  //
-  // the question is difficult since we may have to deal with very elongated
-  // cells where we may achieve 1e-12*h for the distance of these two points
-  // in the 'long' direction, but achieving this tolerance in the 'short'
-  // direction of the cell may not be possible
-  //
-  // what we do instead is then to terminate iterations if
-  //    \| p(x) - p \|_A < eps
-  // where the A-norm is somehow induced by the transformation of the cell.
-  // in particular, we want to measure distances relative to the sizes of
-  // the cell in its principal directions.
-  //
-  // to define what exactly A should be, note that to first order we have
-  // the following (assuming that x* is the solution of the problem, i.e.,
-  // p(x*)=p):
-  //    p(x) - p = p(x) - p(x*)
-  //             = -grad p(x) * (x*-x) + higher order terms
-  // This suggest to measure with a norm that corresponds to
-  //    A = {[grad p(x]^T [grad p(x)]}^{-1}
-  // because then
-  //    \| p(x) - p \|_A  \approx  \| x - x* \|
-  // Consequently, we will try to enforce that
-  //    \| p(x) - p \|_A  =  \| f \|  <=  eps
-  //
-  // Note that using this norm is a bit dangerous since the norm changes
-  // in every iteration (A isn't fixed by depends on xk). However, if the
-  // cell is not too deformed (it may be stretched, but not twisted) then
-  // the mapping is almost linear and A is indeed constant or nearly so.
-  const double eps = 1.e-11;
-  const unsigned int newton_iteration_limit = 20;
-
-  unsigned int newton_iteration = 0;
-  double last_f_weighted_norm;
-  do
+  for(unsigned int newton_iteration = 0; newton_iteration < newton_iteration_limit; newton_iteration++) 
     {
-#ifdef DEBUG_TRANSFORM_REAL_TO_UNIT_CELL
-      std::cout << "Newton iteration " << newton_iteration << std::endl;
-#endif
-
-      // f'(x)
-      Tensor<2,spacedim> df;
+      
+    //   p(x_unit_n)    
+  compute_shapes(std::vector<Point<dim> > (1, x_unit_n), mdata);
+  p_real_n= transform_unit_to_real_cell_internal(mdata);
+      
+      // p'(x_unit_n)
+      Tensor<2, spacedim> J;
       for (unsigned int k=0; k<mdata.n_shape_functions; ++k)
         {
           const Tensor<1,dim> &grad_transform=mdata.derivative(0,k);
@@ -1758,76 +1708,32 @@ transform_real_to_unit_cell_internal
 
           for (unsigned int i=0; i<spacedim; ++i)
             for (unsigned int j=0; j<dim; ++j)
-              df[i][j]+=point[i]*grad_transform[j];
+              J[i][j]+=point[i]*grad_transform[j];
         }
+      
+      // delta_x_unit = J(x_unit_n)^(-1) * (p - p(x_unit_n))
+      contract (delta_x_unit, invert(J), static_cast<const Tensor<1,spacedim>&>(p-p_real_n));
+      
+      if (delta_x_unit.norm() < eps) 
+      return x_unit_n; 
+      
+	  for (unsigned int i=0; i<dim; ++i)
+		x_unit_n[i] += delta_x_unit[i];
+#ifdef DEBUG_TRANSFORM_REAL_TO_UNIT_CELL	    
+                   std::cout << "Iteration   =" << newton_iteration << std::endl
+                       << "	eps   =" << eps << std::endl
+                       << "	x_unit_n =" << x_unit_n << std::endl
+                       << "	Norm of the correction =" << delta_x_unit.norm() << std::endl
+		       << "	p_real_n=" << x_unit_n << std::endl
+		       << " 	p = " << p << std::endl
+                       << "	p_real_n- p =" << p_real_n-p << std::endl;  
+#endif		    
 
-      // Solve  [f'(x)]d=f(x)
-      Tensor<1,spacedim> delta;
-      Tensor<2,spacedim> df_inverse = invert(df);
-      contract (delta, df_inverse, static_cast<const Tensor<1,spacedim>&>(f));
-
-#ifdef DEBUG_TRANSFORM_REAL_TO_UNIT_CELL
-      std::cout << "   delta=" << delta  << std::endl;
-#endif
-
-      // do a line search
-      double step_length = 1;
-      do
-        {
-          // update of p_unit. The spacedim-th component of transformed point
-          // is simply ignored in codimension one case. When this component is
-          // not zero, then we are projecting the point to the surface or
-          // curve identified by the cell.
-          Point<dim> p_unit_trial = p_unit;
-          for (unsigned int i=0; i<dim; ++i)
-            p_unit_trial[i] -= step_length * delta[i];
-
-          // shape values and derivatives
-          // at new p_unit point
-          compute_shapes(std::vector<Point<dim> > (1, p_unit_trial), mdata);
-
-          // f(x)
-          Point<spacedim> p_real_trial = transform_unit_to_real_cell_internal(mdata);
-          const Point<spacedim> f_trial = p_real_trial-p;
-
-#ifdef DEBUG_TRANSFORM_REAL_TO_UNIT_CELL
-          std::cout << "     step_length=" << step_length << std::endl
-                    << "       ||f ||   =" << f.norm() << std::endl
-                    << "       ||f*||   =" << f_trial.norm() << std::endl
-                    << "       ||f*||_A =" << (df_inverse * f_trial).norm() << std::endl;
-#endif
-
-          // see if we are making progress with the current step length
-          // and if not, reduce it by a factor of two and try again
-          //
-          // strictly speaking, we should probably use the same norm as we use
-          // for the outer algorithm. in practice, line search is just a
-          // crutch to find a "reasonable" step length, and so using the l2
-          // norm is probably just fine
-          if (f_trial.norm() < f.norm())
-            {
-              p_real = p_real_trial;
-              p_unit = p_unit_trial;
-              f = f_trial;
-              break;
-            }
-          else if (step_length > 0.05)
-            step_length /= 2;
-          else
-            AssertThrow (false,
-                         (typename Mapping<dim,spacedim>::ExcTransformationFailed()));
-        }
-      while (true);
-
-      ++newton_iteration;
-      if (newton_iteration > newton_iteration_limit)
-        AssertThrow (false,
-                     (typename Mapping<dim,spacedim>::ExcTransformationFailed()));
-      last_f_weighted_norm = (df_inverse * f).norm();
     }
-  while (last_f_weighted_norm > eps);
-
-  return p_unit;
+    
+ AssertThrow (false, 
+	      (typename Mapping<dim,spacedim>::ExcTransformationFailed())); 
+ return x_unit_n;
 }
 
 
@@ -1889,9 +1795,6 @@ transform_real_to_unit_cell_internal (const Triangulation<1,3>::cell_iterator &/
   Assert(false, ExcNotImplemented());
   return Point<1>();
 }
-
-
-
 
 template<int dim, int spacedim>
 template<int dim_>
